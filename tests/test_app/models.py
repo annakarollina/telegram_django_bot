@@ -65,3 +65,14 @@ class BoughtItem(models.Model):
     price = models.DecimalField(max_digits=16, decimal_places=2)
 
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
+
+
+class LostItem(models.Model):
+    """Item de achados e perdidos: foto + descrição por usuário do Telegram."""
+    image = models.FileField(upload_to='lost_items/', null=True, blank=True)
+    description = models.TextField(blank=True)
+    telegram_user_id = models.BigIntegerField()
+    is_complete = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"LostItem #{self.id} (user={self.telegram_user_id})"

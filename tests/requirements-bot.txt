@@ -1,0 +1,12 @@
+# Dependências mínimas para rodar o bot Achados e Perdidos.
+# Use: pip install -r requirements-bot.txt
+# Versões flexíveis para permitir wheels pré-compilados no Windows.
+
+Django>=3.1,<5
+python-telegram-bot>=13.14,<14
+django-environ>=0.4.5
+Pillow
+django-json-widget>=1.1.1
+django-admin-list-filter-dropdown>=1.0.2
+urllib3>=1.26,<2
+psycopg2-binary

@@ -7,12 +7,21 @@ import environ
 env = environ.Env()
 environ.Env.read_env()
 
-sys.path.append('..')
-
 DIRNAME = os.path.dirname(__file__)
+# Raiz do repo (pasta que contém telegram_django_bot) para "import telegram_django_bot"
+sys.path.insert(0, os.path.abspath(os.path.join(DIRNAME, '..', '..')))
 
 DEBUG = True
-DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": "db.sqlite"}}
+
+# Supabase: use DATABASE_URL no .env (Connection Pooler recomendado para IPv4).
+# Ex.: postgresql://postgres.[ref]:[SENHA]@aws-0-[regiao].pooler.supabase.com:6543/postgres
+# Ou Direct: postgresql://postgres:[SENHA]@db.xxx.supabase.co:5432/postgres
+DATABASES = {
+    "default": env.db(
+        "DATABASE_URL",
+        default=f"sqlite:///{os.path.join(DIRNAME, 'db.sqlite')}",
+    )
+}
 
 AUTH_USER_MODEL = 'test_app.User'
 
@@ -30,7 +39,11 @@ INSTALLED_APPS = (
 )
 
 STATIC_URL = "/static/"
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(DIRNAME, "media")
 SECRET_KEY = "abc123"
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
 MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",

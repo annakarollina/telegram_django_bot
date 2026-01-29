@@ -85,7 +85,6 @@ class Migration(migrations.Migration):
             ],
             options={
                 'unique_together': {('bot_menu_elem', 'language_code', 'default_text')},
-                'index_together': {('bot_menu_elem', 'language_code', 'default_text')},
             },
         ),
         migrations.AlterField(

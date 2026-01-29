@@ -1,6 +1,8 @@
 import logging, sys
 from telegram.ext import (
     Updater,
+    MessageHandler,
+    Filters,
 )
 
 import os, django
@@ -11,11 +13,18 @@ from django.conf import settings
 from telegram_django_bot.routing import RouterCallbackMessageCommandHandler
 from telegram_django_bot.tg_dj_bot import TG_DJ_Bot
 
+from test_app.handlers import handle_lost_item_photo, handle_lost_item_description
+from test_app.filters import PendingLostItemFilter
+
 
 def add_handlers(updater):
     dp = updater.dispatcher
+    dp.add_handler(MessageHandler(Filters.photo, handle_lost_item_photo))
+    dp.add_handler(MessageHandler(
+        Filters.text & ~Filters.command & PendingLostItemFilter(),
+        handle_lost_item_description,
+    ))
     dp.add_handler(RouterCallbackMessageCommandHandler())
-    # dp.add_handler(MessageHandler(Filters.text, message_written))
 
 
 def main():
